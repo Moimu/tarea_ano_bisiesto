@@ -10,6 +10,9 @@ ejemplo: para la fecha 28/02/2020 pondrá: 28/02/2020 - 28 de Febrero de 2020 */
         // Siempre mostrara el dia ingresado en el fichero, si algo no corresponde mostrara error.
         echo "$linea - ";
         list($dia,$mes,$ano)=explode("/","$linea");
+        $dia=intval($dia);
+        $mes=intval($mes);
+        $ano=intval($ano);
         // filtramos que el mes este comprendido entre 1 y 12 con el condicionante if, sino daremos error.
         if($mes>0 && $mes<13){
             // filtramos que el año este comprendido entre 0 y 2020 con el condicionante if, sino daremos error.
@@ -22,13 +25,28 @@ ejemplo: para la fecha 28/02/2020 pondrá: 28/02/2020 - 28 de Febrero de 2020 */
                 elseif($mes==1){
                     echo " error el dia no corresponde, corrije el fichero de fechas</br>";
                 }
-                if($dia>0 && $dia<29 && $mes==2){
-                    //Febrero tiene 28 dias
-                    echo "$dia de Febrero de $ano</br>";
+                // Febrero tiene 28 dias salvo que estemos en año bisiesto que tiene 29, un año sera bisiesto,
+                // si al dividir entre 4 el resto es 0.
+                // para los años seculares ultimos de cada siglo acabados en 00 si al dividir entre 400,
+                // el resto es 0 sera bisiesto.
+                if($ano%4==0 || $ano%400==0){
+                    if($dia>0 && $dia<30 && $mes==2){
+                        //Febrero tendra 29 dias es año bisiesto
+                        echo "$dia de Febrero de $ano</br>";
+                    }
+                    elseif($mes==2){
+                        echo " error el dia no corresponde, corrije el fichero de fechas</br>";
+                    }
                 }
-                elseif($mes==2){
-                    echo " error el dia no corresponde, corrije el fichero de fechas</br>";
-                }
+                else{
+                    if($dia>0 && $dia<29 && $mes==2){
+                        //Febrero tiene 28 dias
+                        echo "$dia de Febrero de $ano</br>";
+                    }
+                    elseif($mes==2){
+                        echo " error el dia no corresponde este año febrero tiene 28 dias, corrije el fichero de fechas</br>";
+                    }
+                } 
                 if($dia>0 && $dia<32 && $mes==3){
                     // Marzo tiene 31 dias
                     echo "$dia de Marzo de $ano</br>";
